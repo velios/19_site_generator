@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../12_image_resize/.idea/12_image_resize.iml" filepath="$PROJECT_DIR$/../12_image_resize/.idea/12_image_resize.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../17_sites_monitoring/.idea/17_sites_monitoring.iml" filepath="$PROJECT_DIR$/../17_sites_monitoring/.idea/17_sites_monitoring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/19_site_generator.iml" filepath="$PROJECT_DIR$/.idea/19_site_generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../20_mood/.idea/20_mood.iml" filepath="$PROJECT_DIR$/../20_mood/.idea/20_mood.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../3_bars/.idea/3_bars.iml" filepath="$PROJECT_DIR$/../3_bars/.idea/3_bars.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../4_json/.idea/4_json.iml" filepath="$PROJECT_DIR$/../4_json/.idea/4_json.iml" />
+    </modules>
+  </component>
+</project>

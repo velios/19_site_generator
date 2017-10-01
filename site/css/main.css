@@ -1,0 +1,14 @@
+.topic-name {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.display-3 a {
+  color: #23527c;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.display-3 a:hover {
+  color: #337ab7;
+}

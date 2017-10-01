@@ -1,0 +1,19 @@
+{% extends "basic.html" %}
+
+{% block title %}Table of Contents{% endblock %}
+
+{% block content %}
+<div class="row">
+  {% for topic_name, topic_articles in articles_info.items() %}
+  <div class="col-md-4">
+    <h2 class="topic-name">{{ topics_info[topic_name] }}</h2>
+    {% for article in topic_articles %}
+      <p><a class="btn btn-light btn-block" href="site/{{ article.source|replace('.md', '')|e|replace(' ','%20') }}.html">{{ article.title|e }}</a></p>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block stylesheets %}
+  <link rel="stylesheet" href="site/css/main.css">
+{% endblock %}
