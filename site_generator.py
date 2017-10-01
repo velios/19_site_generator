@@ -1,10 +1,23 @@
 from os import path, makedirs
 import json
 from collections import defaultdict
+from argparse import ArgumentParser
 
 import markdown
 from livereload import Server
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader
+
+
+def make_cmd_arguments_parser():
+    parser_description = 'The script generates the documentation from .md files with structure describe in config.json file.'
+    parser = ArgumentParser(description=parser_description)
+    parser.add_argument('-l', '--livereload',
+                        help='Run in livereload mode',
+                        action='store_true')
+    parser.add_argument('-b', '--build',
+                        help='Build or rebuild your encyclopedia from source files...',
+                        action='store_true')
+    return parser
 
 
 def save_data_to_file(user_data, output_file_path):
@@ -83,8 +96,16 @@ def make_site():
 
 
 if __name__ == '__main__':
-    make_site()
-    server = Server()
-    server.watch('templates/*.html', make_site)
-    server.watch('articles/**/*.md', make_site)
-    server.serve(root='')
+    cmd_args_parser = make_cmd_arguments_parser()
+    cmd_args = cmd_args_parser.parse_args()
+    if not any([cmd_args.livereload, cmd_args.build]):
+        cmd_args_parser.error("One of --livereload or --build must be given. Type -h to help.")
+    if cmd_args.build:
+        print('Build encyclopedia from source files...\n')
+        make_site()
+    if cmd_args.livereload:
+        print('Start watch files...\n')
+        server = Server()
+        server.watch('templates/*.html', make_site)
+        server.watch('articles/**/*.md', make_site)
+        server.serve(root='')
