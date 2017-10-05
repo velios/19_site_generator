@@ -12,7 +12,7 @@
 
       <div class="container">
 
-        <h1 class="display-3"><a href="/">Энциклопедия Devman</a></h1>
+        <h1 class="display-3"><a href="{{ root }}">Энциклопедия Devman</a></h1>
         <p>Знания, необходимые для старта. Коротко. Ясно. В сжатом виде.</p>
       </div>
     </div>
@@ -30,8 +30,10 @@
     </div> <!-- /container -->
 
 
+    {% block stylesheets %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
-    {% block stylesheets %}{% endblock %}
+    <link rel="stylesheet" href="{{ static }}css/main.css">
+    {% endblock %}
 
 
   </body>

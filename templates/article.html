@@ -2,12 +2,13 @@
 {% block title %}{{ article_params.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ article_params.title }}</h1>
+    <h1>{{ article_params.title|e }}</h1>
     <div class="markdown">
       {{ article_content }}
     </div>
 {% endblock %}
+
 {% block stylesheets %}
-  <link rel="stylesheet" href="../css/main.css">
+  {{ super() }}
 {% endblock %}
 

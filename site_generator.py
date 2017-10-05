@@ -37,20 +37,26 @@ def fetch_encode_data_from_file(file_path, encoding='utf-8'):
         return file_data
 
 
-def render_html_from_template(template_full_path, **kwargs):
-    template_directory, template_file_name = path.split(template_full_path)
+def render_html_from_template(template_basename, **template_arguments):
+    root_folder = '/19_site_generator/'
+    template_directory = 'templates'
+    static_folder_path = '{root_folder}static_files/'.format(root_folder=root_folder)
+
     jinja_environment = Environment(loader=FileSystemLoader(template_directory),
                                     trim_blocks=True,
-                                    lstrip_blocks=True,)
-    template = jinja_environment.get_template(template_file_name)
-    return template.render(**kwargs)
+                                    lstrip_blocks=True)
+    template = jinja_environment.get_template(template_basename,
+                                              globals={'static': static_folder_path,
+                                                       'root': root_folder}
+                                              )
+    return template.render(**template_arguments)
 
 
 def generate_html_from_markdown_file(markdown_file_path):
     markdown_data = fetch_encode_data_from_file(markdown_file_path)
     return markdown.markdown(markdown_data)
 
-# Unpure funcitions
+
 def group_by_topic_articles_dict(config_data, articles_name='articles', topic_name='topic'):
     group_by_topic_articles_dict = defaultdict(list)
     for article_info in config_data[articles_name]:
@@ -59,38 +65,46 @@ def group_by_topic_articles_dict(config_data, articles_name='articles', topic_na
     return group_by_topic_articles_dict
 
 
-def generate_table_of_contents_html_file(config_data, result_folder):
+def save_render_html_from_template(template_basename, output_html_file_path, **template_arguments):
+    rendered_html = render_html_from_template(template_basename=template_basename,
+                                              **template_arguments)
+    save_data_to_file(user_data=rendered_html,
+                      output_file_path=output_html_file_path)
+
+
+def save_table_of_contents_html_file(config_data, result_file_path):
     articles_info = group_by_topic_articles_dict(config_data)
     topics_info = {config['slug']: config['title'] for config in config_data['topics']}
+    save_render_html_from_template(
+        template_basename='index.html',
+        output_html_file_path=result_file_path,
+        articles_info=articles_info,
+        topics_info=topics_info
+    )
 
-    html = render_html_from_template(template_full_path=path.join('templates', 'index.html'),
-                                     articles_info=articles_info,
-                                     topics_info=topics_info,)
-    save_data_to_file(html, 'index.html')
 
-
-def generate_articles_html_files_from_markdown(config_data, result_folder):
+def save_articles_html_files_from_markdown(config_data, result_folder):
     articles_storage_path = 'articles'
     for article_params in config_data['articles']:
         article_path_in_storage = article_params['source']
         transformed_markdown = generate_html_from_markdown_file(
             path.join(articles_storage_path, article_path_in_storage)
         )
-        article_html = render_html_from_template(
-            template_full_path=path.join('templates', 'article.html'),
+        save_render_html_from_template(
+            template_basename='article.html',
+            output_html_file_path=path.join(result_folder, article_path_in_storage.replace('.md', '.html')),
             article_params=article_params,
             article_content=transformed_markdown
         )
-        save_data_to_file(article_html, path.join(result_folder, article_path_in_storage.replace('.md', '.html')))
 
 
 def make_site():
     try:
         config_articles_file_path = 'config.json'
         config_data = json.loads(fetch_encode_data_from_file(config_articles_file_path))
-        result_folder = 'site'
-        generate_table_of_contents_html_file(config_data=config_data, result_folder=result_folder)
-        generate_articles_html_files_from_markdown(config_data=config_data, result_folder=result_folder)
+        result_articles_folder = path.join('static_files', 'articles')
+        save_table_of_contents_html_file(config_data=config_data, result_file_path='index.html')
+        save_articles_html_files_from_markdown(config_data=config_data, result_folder=result_articles_folder)
     except (ValueError, FileExistsError) as error:
         print('Error: ', error)
 

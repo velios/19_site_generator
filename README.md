@@ -20,7 +20,7 @@ $ pip install -r requirements.txt # alternatively try pip3
 
 ### Structure
 * `articles/` - folder with original articles writen with [markdown syntax](https://ru.wikipedia.org/wiki/Markdown)
-* `site/` - folder with files for publication
+* `static_files/` - folder for static files for publication, include compile articles
 * `templates/` - folder with templates in [Jinja2 format](http://jinja.pocoo.org/docs/2.9/templates/#template-inheritance)
 * `config.json` - file describing the structure table of contents, titles, topics and path to source files
 * `site_generator.py` - script to make it all work together
